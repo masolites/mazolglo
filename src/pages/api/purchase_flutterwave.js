@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       amount,
       currency: "NGN",
       redirect_url: callback_url,
-      customer: { email: "test@mazolglo.com" }, // Use a dummy email for now
+      customer: { email: "test@mazolglo.com" }, // Dummy email for Flutterwave
       customizations: { title: "Mazolglo Token Purchase" }
     }, {
       headers: { Authorization: `Bearer ${FLW_SECRET}` }
