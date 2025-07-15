@@ -1,2 +1,2 @@
-MAZOLGLOW
+MAZOL GLOW
 E-commerce & Blockchain
