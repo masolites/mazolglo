@@ -1,0 +1,29 @@
+import axios from "axios";
+import { connectToDatabase } from '../../lib/mongodb';
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  const { email, wallet, amount } = req.body;
+  if (!email || !wallet || !amount) return res.status(400).json({ error: "Missing fields" });
+
+  const FLW_SECRET = process.env.FLUTTERWAVE_SECRET_KEY;
+  const callback_url = "https://mazolglo.com/api/flutterwave_webhook";
+
+  const response = await axios.post("https://api.flutterwave.com/v3/payments", {
+    tx_ref: `mazolglo_${Date.now()}`,
+    amount,
+    currency: "NGN",
+    redirect_url: callback_url,
+    customer: { email },
+    customizations: { title: "Mazolglo Token Purchase" }
+  }, {
+    headers: { Authorization: `Bearer ${FLW_SECRET}` }
+  });
+
+  const { db } = await connectToDatabase();
+  await db.collection("flutterwave_payments").insertOne({
+    email, wallet, amount, tx_ref: response.data.data.tx_ref, status: "pending", createdAt: new Date()
+  });
+
+  return res.status(200).json({ paymentLink: response.data.data.link });
+}
