@@ -1,0 +1,21 @@
+.walletLoading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.walletLoading h2 {
+  color: #1e3a8a;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.connectButtonWrapper {
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 300px;
+}
